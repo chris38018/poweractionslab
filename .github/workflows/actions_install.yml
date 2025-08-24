@@ -29,7 +29,6 @@ on:
       add-tools-to-path:
         description: 'Enables you to use pac cli from script tasks without needing to set up the path manually.'
         required: false
-
 runs:
   using: 'node20'
   main: '../dist/actions/actions-install/index.js'
