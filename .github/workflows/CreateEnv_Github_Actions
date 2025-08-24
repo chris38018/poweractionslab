@@ -1,1 +1,90 @@
-Jobs:
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+name: 'create environment'
+description: 'Power Platform Admin Create Environment'
+inputs:
+  user-name:
+    description: 'Power Platform user name to authenticate with, e.g. myname@my-org.onmicrosoft.com. Setting this input makes user-name and password required; specifying alternate "app-id" credential set of inputs will result in an error.'
+    required: false
+
+  password-secret:
+    description: 'Power Platform password, required if authenticating with username. Do NOT checkin password, instead create a secret and reference it here with: see: https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#using-encrypted-secrets-in-a-workflow'
+    required: false
+
+  app-id:
+    description: 'The application id to authenticate with. Setting this input makes app-id, tenant-id and client-secret required; specifying alternate "username" credential set of inputs will result in an error.'
+    default: '670e08c1-d777-4cc3-94d9-f0798048b879'
+    required: true
+
+  client-secret:
+    description: 'The client secret to authenticate with. Required if authenticating with app-id.'
+    required: true
+    
+
+  tenant-id:
+    description: 'Tenant id if using app-id & client secret to authenticate.'
+    required: true
+    default: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
+
+  cloud:
+    description: 'Cloud instance to authenticate with. Default: Public. See "pac auth create help" for valid cloud instance names'
+    required: false
+    default: 'Public'
+
+  name:
+    description: 'The name of the environment you are creating.'
+    required: true
+
+  region:
+    description: 'The name of the region for your environment.'
+    required: true
+    default: 'unitedstates'
+
+  type:
+    description: 'The type of environment (Trial, Sandbox, Production, SubscriptionBasedTrial).'
+    required: true
+    default: 'Sandbox'
+
+  user:
+    description: 'Object ID or user principal name (UPN) of Microsoft Entra ID user to be assigned to the environment.'
+    required: false
+
+  currency:
+    description: 'The currency to use for the environment.'
+    required: false
+    default: 'USD'
+
+  language:
+    description: 'Sets the language used for your environment. Defaults to "English (United States)".'
+    required: false
+    default: 'English (United States)'
+
+  templates:
+    description: 'The Dynamics 365 that needs to be deployed to the environment. Passed as comma separated values.'
+    required: false
+
+  domain:
+    description: 'The domain name of the environment URL. Eg: https://{contoso}.crm.dynamics.com.'
+    required: false
+    default: 'https://MODERNCOMMS438399.onmicrosoft.com
+
+  team-id:
+    description: 'The ID of the Microsoft Teams team to create the Power Apps environment in.'
+    required: false
+
+  security-group-id:
+    description: 'Microsoft Entra ID Security Group ID to use when creating the environment.'
+    required: false
+
+outputs:
+  environment-url:
+    description: 'URL of the freshly created environment'
+
+  environment-id:
+    description: 'ID of the freshly created environment'
+
+runs:
+  using: 'node20'
+  main: '../dist/actions/create-environment/index.js'
+  # main: '../out/actions/create-environment/index.js'
+
