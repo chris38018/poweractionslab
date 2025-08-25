@@ -4,13 +4,13 @@ name: 'create-environment'
 on: 
   workflow_dispatch:
     inputs:
-      user-name:
-        description: 'Power Platform user name to authenticate with, e.g. myname@my-org.onmicrosoft.com. Setting this input makes user-name and password required; specifying alternate "app-id" credential set of inputs will result in an error.'
-        required: false
+      #user-name:
+        #description: 'Power Platform user name to authenticate with, e.g. myname@my-org.onmicrosoft.com. Setting this input makes user-name and password required; specifying alternate "app-id" credential set of inputs will result in an error.'
+        #required: false
     
-      password-secret:
-        description: 'Power Platform password, required if authenticating with username. Do NOT checkin password, instead create a secret and reference it here with: see: https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#using-encrypted-secrets-in-a-workflow'
-        required: false
+      #password-secret:
+        #description: 'Power Platform password, required if authenticating with username. Do NOT checkin password, instead create a secret and reference it here with: see: https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#using-encrypted-secrets-in-a-workflow'
+        #required: false
     
       app-id:
         description: 'The application id to authenticate with. Setting this input makes app-id, tenant-id and client-secret required; specifying alternate "username" credential set of inputs will result in an error.'
@@ -39,9 +39,10 @@ on:
           - UsGovDod
           - China
           
-      name:
-        description: 'The name of the environment you are creating.'
-        required: true
+      #name:
+        #description: 'The name of the environment you are creating.'
+        #required: true
+        
     
       region:
         description: 'The name of the region for your environment.'
@@ -90,13 +91,13 @@ jobs:
       - name: Set Environment Name
         run: echo "ENV_NAME=${{ github.ref_name }}-${{ github.run_id }}" >> $GITHUB_ENV
 
-      - name: Authenticate with Azure via Federated Auth
+      - name: Authenticate 
         uses: azure/login@v1
         with:
-          client-id: '670e08c1-d777-4cc3-94d9-f0798048b879'
-          tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
-          client-secret: ${{ secrets.PowerPlatformSPN }}
-          federated-credentials: false
+          client-id: ${{ inputs.app-id }}
+          tenant-id: ${{ inputs.tenant-id }}
+          client-secret: ${{ inputs.client-secret }}
+         
 
       - name: Create Power Platform Environment
         run: pac environment create --name $ENV_NAME --region unitedstates --type Sandbox
