@@ -86,11 +86,11 @@ on:
     outputs:
       environment-url:
       description: 'URL of the freshly created environment'
-      value: ${{ steps.gener
+      
       
       environment-id:
         description: 'ID of the freshly created environment'
 runs:
-  using: 'node20'
+  using: 'node22'
   main: '../dist/actions/create-environment/index.js'
   # main: '../out/actions/create-environment/index.js'
