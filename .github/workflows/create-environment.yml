@@ -1,87 +1,98 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-name: 'create-environment'
-on: 
+name: Create Dev Test and Prod Environments
+# clean up the environment for the next demo
+#  clean up environment tasks for QA and Prod 
+
+on:
   workflow_dispatch:
     inputs:
-      #user-name:
-        #description: 'Power Platform user name to authenticate with, e.g. myname@my-org.onmicrosoft.com. Setting this input makes user-name and password required; specifying alternate "app-id" credential set of inputs will result in an error.'
-        #required: false
     
-      #password-secret:
-        #description: 'Power Platform password, required if authenticating with username. Do NOT checkin password, instead create a secret and reference it here with: see: https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#using-encrypted-secrets-in-a-workflow'
-        #required: false
-    
-      app-id:
-        description: 'The application id to authenticate with. Setting this input makes app-id, tenant-id and client-secret required; specifying alternate "username" credential set of inputs will result in an error.'
-        required: true
-        default: '670e08c1-d777-4cc3-94d9-f0798048b879'
-    
-      #client-secret:
-        #description: 'The client secret to authenticate with. Required if authenticating with app-id.'
-        #required: true
-        #default: 
-    
-      tenant-id:
-        description: 'Tenant id if using app-id & client secret to authenticate.'
-        required: true
-        default: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
-    
-      cloud:
-        description: 'Cloud instance to authenticate with. Default: Public. See "pac auth create help" for valid cloud instance names'
-        required: false
-        default: 'Public'
-        type: choice
-        options:
-          - Public
-          - UsGov
-          - UsGovHigh
-          - UsGovDod
-          - China
-          
-      #name:
-        #description: 'The name of the environment you are creating.'
-        #required: true
-        
-    
-      region:
-        description: 'The name of the region for your environment.'
-        required: true
-        default: 'unitedstates'
-    
-      type:
-        description: 'The type of environment (Trial, Sandbox, Production, SubscriptionBasedTrial).'
-        required: true
-        default: 'Sandbox'
-        
-      team-id:
-        description: 'The ID of the Microsoft Teams team to create the Power Apps environment in.'
-        required: false
-    
-      security-group-id:
-        description: 'Microsoft Entra ID Security Group ID to use when creating the environment.'
-        required: false
+     env_name:
+     description: name for the environment to be created
+     required: true
+     default: GitHub_Actions_Demo
+     
+     client_id:
+     description: service principal client id
+     required: true
+     default: [client id]
+     
+     user_id:
+     description: AAD object id for the user
+     required: true 
+     default: [AAD object id]
+   
+ #Do Not change these values
+      
 
 jobs:
-  deploy:
+  Create-Environments:
     runs-on: windows-latest
+    # or you can say runs-on: ubuntu-latest
+    env:
+      RUNNER_DEBUG: 1
+
     steps:
-      - name: Set Environment Name
-        run: echo "ENV_NAME=${{ github.ref_name }}-${{ github.run_id }}" >> $GITHUB_ENV
+    - uses: actions/checkout@v3
+      with:
+        lfs: true
+        
+    - name: Create Developer Environment
+      uses: microsoft/powerplatform-actions/create-environment@v0
+      with:
+        app-id: ${{secrets.DEV_APPID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        name: ${{ github.event.inputs.env_name}}_Dev
+        type: Developer
+        domain: ${{ github.event.inputs.env_name}}Dev
+    
+    - name: assign-user to developer environment
+      uses:  microsoft/powerplatform-actions/assign-user@v0
+      with:
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        environment: 'https://${{ github.event.inputs.env_name}}Dev.dynamics.com'
+        user: ${{ github.event.inputs.user_id }}
+        role: System Administrator
+        
+    #- name: Create Test Environment
+    #  uses: microsoft/powerplatform-actions/create-environment@v0
+    #    with:
+    #      app-id: ${{secrets.CLIENT_ID}}
+     #     client-secret: ${{ secrets.PowerPlatformSPN }}
+     #     tenant-id: ${{secrets.TENANT_ID}}
+     #     name: ${{ github.event.inputs.env_name}}_Test
+     #     type: Sandbox
+     #     domain: ${{ github.event.inputs.env_name}}Test
 
-      - name: Authenticate 
-        uses: azure/login@v1
-        with:
-          client-id: ${{ inputs.app-id }}
-          tenant-id: ${{ inputs.tenant-id }}
-          client-secret: ${{ secrets.PowerPlatformSPN }}
-         
+    #  - name: assign-user to test environment
+    #    uses:  microsoft/powerplatform-actions/assign-user@v0
+   #     with:
+    #      app-id: ${{secrets.CLIENT_ID}}
+    #      client-secret: ${{ secrets.PowerPlatformSPN }}
+     #     tenant-id: ${{secrets.TENANT_ID}}
+     #     environment: 'https://${{ github.event.inputs.env_name}}Test.crm.dynamics.com'
+      #    user: ${{ github.event.inputs.user_id }}
+     #     role: System Administrator
+        
+        
+  #    - name: Create Production Environment
+   #     uses: microsoft/powerplatform-actions/create-environment@v0
+   #     with:
+   #       app-id: ${{secrets.CLIENT_ID}}
+   #       client-secret: ${{ secrets.PowerPlatformSPN }}
+   #       tenant-id: ${{secrets.TENANT_ID}}
+   #       name: ${{ github.event.inputs.env_name}}_Prod
+   #       type: Production
+   #       domain: ${{ github.event.inputs.env_name}}Prod
 
-      - name: Create Power Platform Environment
-        run: pac environment create --name $ENV_NAME --region unitedstates --type Sandbox
-
-      - name: Cleanup Power Platform Environment on Failure
-        if: failure()
-        run: pac environment delete --name $ENV_NAME
-
-
+  #    - name: assign-user to Prod environment
+  #      uses:  microsoft/powerplatform-actions/assign-user@v0
+ #       with:
+  #        app-id: ${{secrets.CLIENT_ID}}
+   #       client-secret: ${{ secrets.PowerPlatformSPN }}
+   #       tenant-id: ${{secrets.TENANT_ID}}
+    #      environment: 'https://${{ github.event.inputs.env_name}}Prod.crm.dynamics.com'
+   #       user: ${{ github.event.inputs.user_id }}
+    #      role: System Administrator
