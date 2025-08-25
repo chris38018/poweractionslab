@@ -51,7 +51,7 @@ jobs:
         solution-output-file: out/ship/MicrosoftLearnApp.zip
 
     - name: Upload the ready to ship solution to GH artifact store
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: managedSolutions
         path: out/ship/MicrosoftLearnApp.zip
