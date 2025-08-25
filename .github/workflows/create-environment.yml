@@ -17,10 +17,10 @@ on:
         required: true
         default: '670e08c1-d777-4cc3-94d9-f0798048b879'
     
-      client-secret:
-        description: 'The client secret to authenticate with. Required if authenticating with app-id.'
-        required: true
-        default: ${{ secrets.PowerPlatformSPN }}
+      #client-secret:
+        #description: 'The client secret to authenticate with. Required if authenticating with app-id.'
+        #required: true
+        #default: 
     
       tenant-id:
         description: 'Tenant id if using app-id & client secret to authenticate.'
@@ -96,7 +96,7 @@ jobs:
         with:
           client-id: ${{ inputs.app-id }}
           tenant-id: ${{ inputs.tenant-id }}
-          client-secret: ${{ inputs.client-secret }}
+          client-secret: ${{ secrets.PowerPlatformSPN }}
          
 
       - name: Create Power Platform Environment
