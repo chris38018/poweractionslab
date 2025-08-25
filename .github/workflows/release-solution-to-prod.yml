@@ -1,0 +1,85 @@
+name: release-solution-to-prod
+# prepare for releasing to prod:
+#   convert solution to managed (using a build PowerPlatform environment for the conversion)
+#   upload the solution to the GitHub artifacts and deploy to the PROD environment
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+jobs:
+  convert-to-managed:
+    runs-on: windows-latest
+    env:
+      RUNNER_DEBUG: 1
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        lfs: true
+
+    - name: Pack solution
+      uses: microsoft/powerplatform-actions/pack-solution@v0
+      with:
+        solution-folder: solutions/MicrosoftLearnApp
+        solution-file: out/solutions/MicrosoftLearnApp.zip
+        solution-type: Unmanaged
+
+    - name: Import solution as unmanaged to build env
+      uses: microsoft/powerplatform-actions/import-solution@v0
+      with:
+        environment-url: 'https://orgf9e60ad2.crm.dynamics.com'
+        app-id: '670e08c1-d777-4cc3-94d9-f0798048b879'
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
+        solution-file: out/solutions/MicrosoftLearnApp.zip
+        force-overwrite: true
+        publish-changes: true
+
+    - name: Export solution as managed
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+        environment-url: 'https://orgf9e60ad2.crm.dynamics.com'
+        app-id: '670e08c1-d777-4cc3-94d9-f0798048b879'
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
+        solution-name: MicrosoftLearnApp
+        managed: true
+        solution-output-file: out/ship/MicrosoftLearnApp.zip
+
+    - name: Upload the ready to ship solution to GH artifact store
+      uses: actions/upload-artifact@v2
+      with:
+        name: managedSolutions
+        path: out/ship/MicrosoftLearnApp.zip
+
+  release-to-staging:
+    needs: [ convert-to-managed ]
+    runs-on: windows-latest
+    env:
+      RUNNER_DEBUG: 1
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        lfs: true
+
+    - name: Fetch the ready to ship solution from GH artifact store
+      uses: actions/download-artifact@v2
+      with:
+        name: managedSolutions
+        path: out/release/
+
+    - name: Import solution to prod env
+      uses: microsoft/powerplatform-actions/import-solution@v0
+      with:
+        environment-url: 'https://org5bbbb7d8.crm.dynamics.com'
+        app-id: '8ad24230-4256-4f6c-a06e-a3a335294041'
+        client-secret: ${{ secrets.QA_SECRET }}
+        tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
+        solution-file: out/release/MicrosoftLearnApp.zip
+        force-overwrite: true
+        publish-changes: true
