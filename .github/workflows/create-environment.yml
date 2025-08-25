@@ -53,29 +53,7 @@ on:
         description: 'The type of environment (Trial, Sandbox, Production, SubscriptionBasedTrial).'
         required: true
         default: 'Sandbox'
-    
-      user:
-        description: 'Object ID or user principal name (UPN) of Microsoft Entra ID user to be assigned to the environment.'
-        required: false
-    
-      currency:
-        description: 'The currency to use for the environment.'
-        required: false
-        default: 'USD'
-    
-      language:
-        description: 'Sets the language used for your environment. Defaults to "English (United States)".'
-        required: false
-        default: 'English (United States)'
-    
-      templates:
-        description: 'The Dynamics 365 that needs to be deployed to the environment. Passed as comma separated values.'
-        required: false
-    
-      domain:
-        description: 'The domain name of the environment URL. Eg: https://{contoso}.crm.dynamics.com.'
-        required: false
-    
+        
       team-id:
         description: 'The ID of the Microsoft Teams team to create the Power Apps environment in.'
         required: false
