@@ -24,7 +24,7 @@ jobs:
         lfs: true
 
     - name: Pack solution
-      uses: microsoft/powerplatform-actions/pack-solution@v0
+      uses: microsoft/powerplatform-actions/pack-solution@latest
       with:
         solution-folder: solutions/MicrosoftLearnApp
         solution-file: out/solutions/MicrosoftLearnApp.zip
