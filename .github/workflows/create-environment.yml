@@ -82,14 +82,27 @@ on:
       security-group-id:
         description: 'Microsoft Entra ID Security Group ID to use when creating the environment.'
         required: false
-    outputs:
-      environment-url:
-      description: 'URL of the freshly created environment'
-      
-      
-      environment-id:
-        description: 'ID of the freshly created environment'
-runs:
-  using: 'node22'
-  main: '../dist/actions/create-environment/index.js'
-  # main: '../out/actions/create-environment/index.js'
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+      - name: Set Environment Name
+        run: echo "ENV_NAME=${{ github.ref_name }}-${{ github.run_id }}" >> $GITHUB_ENV
+
+      - name: Authenticate with Azure via Federated Auth
+        uses: azure/login@v1
+        with:
+          client-id: '670e08c1-d777-4cc3-94d9-f0798048b879'
+          tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
+          client-secret: ${{ secrets.PowerPlatformSPN }}
+          federated-credentials: false
+
+      - name: Create Power Platform Environment
+        run: pac environment create --name $ENV_NAME --region unitedstates --type Sandbox
+
+      - name: Cleanup Power Platform Environment on Failure
+        if: failure()
+        run: pac environment delete --name $ENV_NAME
+
+
