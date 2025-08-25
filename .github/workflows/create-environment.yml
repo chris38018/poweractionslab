@@ -52,7 +52,6 @@ on:
         description: 'The type of environment (Trial, Sandbox, Production, SubscriptionBasedTrial).'
         required: true
         default: 'Sandbox'
-        type: environment
     
       user:
         description: 'Object ID or user principal name (UPN) of Microsoft Entra ID user to be assigned to the environment.'
