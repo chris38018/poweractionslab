@@ -29,6 +29,7 @@ permissions:
   contents: write      
 
 jobs:
+ 
   Create-Environments:
     runs-on: windows-latest
     # or you can say runs-on: ubuntu-latest
@@ -40,6 +41,10 @@ jobs:
       with:
         lfs: true
         
+    - name: Script
+      run: ./script.ps1
+      shell: pwsh
+      
     - name: Create Developer Environment
       uses: microsoft/powerplatform-actions/create-environment@v0
       with:
