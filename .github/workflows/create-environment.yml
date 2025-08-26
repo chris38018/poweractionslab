@@ -41,9 +41,9 @@ jobs:
       with:
         lfs: true
         
-    - name: Script
-      run: ./script.ps1
-      shell: pwsh
+    #- name: Script
+     # run: ./script.ps1
+      #shell: pwsh
       
     - name: Create Developer Environment
       uses: microsoft/powerplatform-actions/create-environment@v0
