@@ -65,7 +65,7 @@ jobs:
         client-secret: ${{ secrets.DEV_APP_SECRET }}
         tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         environment: 'https://${{ github.event.inputs.env_name}}Dev.dynamics.com'
-        user: '1cd17b05-cdf5-491f-91cb-aa29ce59ed9e'
+        user: '6f16ee81-6e0f-4c20-906e-fc02a054d3a3'
         role: System Administrator
         
     #- name: Create Test Environment
