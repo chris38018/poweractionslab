@@ -15,7 +15,6 @@ on:
        description: service principal client id
        required: true
       
-     
      user_id:
        description: AAD object id for the user
        required: true
@@ -48,7 +47,7 @@ jobs:
         tenant-id: ${{secrets.TENANT_ID}}
         name: ${{ github.event.inputs.env_name}}_Dev
         type: Developer
-        domain: ${{ github.event.inputs.env_name}}Dev
+        domain: ${{ github.event.inputs.domain}}Dev
     
     - name: assign-user to developer environment
       uses:  microsoft/powerplatform-actions/assign-user@v0
