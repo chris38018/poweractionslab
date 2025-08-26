@@ -18,7 +18,12 @@ on:
      
      user_id:
        description: AAD object id for the user
-       required: true 
+       required: true
+
+     Domain: 
+       description: domain the environment is being created in
+       required: true
+       default: MODERNCOMMS438399.onmicrosoft.com
        
    
  #Do Not change these values
