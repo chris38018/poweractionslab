@@ -52,7 +52,7 @@ jobs:
         client-secret: ${{ secrets.DEV_APP_SECRET }}
         tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         name: ${{ github.event.inputs.env_name}}_SB
-        type: Developer
+        type: Sandbox
         domain: ${{ github.event.inputs.domain}}SB
     
     - name: assign-user to sandbox environment
