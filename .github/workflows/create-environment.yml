@@ -57,7 +57,7 @@ jobs:
         domain: ${{ github.event.inputs.domain}}SB
     
     - name: assign-user to sandbox environment
-      uses:  microsoft/powerplatform-actions/assign-user@v0
+      uses:  microsoft/powerplatform-actions/assign-user@v1
       with:
         app-id: ${{secrets.CLIENT_ID}}
         client-secret: ${{ secrets.PowerPlatformSPN }}
