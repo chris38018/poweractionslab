@@ -19,7 +19,11 @@ on:
      user_id:
        description: AAD object id for the user
        required: true
-       
+
+     domain:
+       description: domain used with your environment 
+       required: true
+       default: GitHubActionsDemo
    
  #Do Not change these values
       
