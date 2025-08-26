@@ -42,9 +42,9 @@ jobs:
     - name: Create Developer Environment
       uses: microsoft/powerplatform-actions/create-environment@v0
       with:
-        app-id: ${{secrets.DEV_APPID}}
+        app-id: '670e08c1-d777-4cc3-94d9-f0798048b879'
         client-secret: ${{ secrets.PowerPlatformSPN }}
-        tenant-id: ${{secrets.TENANT_ID}}
+        tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         name: ${{ github.event.inputs.env_name}}_Dev
         type: Developer
         domain: ${{ github.event.inputs.domain}}Dev
