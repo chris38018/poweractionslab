@@ -57,6 +57,7 @@ jobs:
         name: ${{ github.event.inputs.env_name}}_DEV
         type: Developer
         domain: ${{ github.event.inputs.domain}}DEV
+        user: '46a71f9e-875a-4a1c-ba7e-b2aa08018d36'
     
     - name: assign-user to Developer environment
       uses:  microsoft/powerplatform-actions/assign-user@v1
