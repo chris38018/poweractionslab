@@ -48,24 +48,24 @@ jobs:
     - name: Install Power Platform Tools
       uses: microsoft/powerplatform-actions/actions-install@v1
       
-    - name: Create Development Environment
+    - name: Create Developer Environment
       uses: microsoft/powerplatform-actions/create-environment@v1
       with:
         app-id: '0f1aaa86-6311-4b76-ad49-cbc028f3096f'
         client-secret: ${{ secrets.DEV_APP_SECRET }}
         tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         name: ${{ github.event.inputs.env_name}}_DEV
-        type: Development
+        type: Developer
         domain: ${{ github.event.inputs.domain}}DEV
     
-    - name: assign-user to sandbox environment
+    - name: assign-user to Developer environment
       uses:  microsoft/powerplatform-actions/assign-user@v1
       with:
-        app-id: ${{secrets.CLIENT_ID}}
-        client-secret: ${{ secrets.PowerPlatformSPN }}
-        tenant-id: ${{secrets.TENANT_ID}}
+        app-id: '0f1aaa86-6311-4b76-ad49-cbc028f3096f'
+        client-secret: ${{ secrets.DEV_APP_SECRET }}
+        tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         environment: 'https://${{ github.event.inputs.env_name}}Dev.dynamics.com'
-        user: ${{ github.event.inputs.user_id }}
+        user: '1cd17b05-cdf5-491f-91cb-aa29ce59ed9e'
         role: System Administrator
         
     #- name: Create Test Environment
