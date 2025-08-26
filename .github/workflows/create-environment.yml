@@ -68,7 +68,7 @@ jobs:
      #     tenant-id: ${{secrets.TENANT_ID}}
      #     name: ${{ github.event.inputs.env_name}}_Test
      #     type: Sandbox
-     #     domain: ${{ github.event.inputs.env_name}}Test
+     #     domain: ${{ github.event.inputs.domain}}Test
 
     #  - name: assign-user to test environment
     #    uses:  microsoft/powerplatform-actions/assign-user@v0
