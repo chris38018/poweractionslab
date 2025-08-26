@@ -25,8 +25,8 @@ on:
        default: GitHubActionsDemo
    
  #Do Not change these values
-permissions:
-  contents: write      
+#permissions:
+  #contents: write      
 
 jobs:
  
