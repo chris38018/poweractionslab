@@ -44,9 +44,10 @@ jobs:
     #- name: Script
      # run: ./script.ps1
       #shell: pwsh
-      
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1
     - name: Create Sandbox Environment
-      uses: microsoft/powerplatform-actions/create-environment@v0
+      uses: microsoft/powerplatform-actions/create-environment@v1
       with:
         app-id: '0f1aaa86-6311-4b76-ad49-cbc028f3096f'
         client-secret: ${{ secrets.DEV_APP_SECRET }}
