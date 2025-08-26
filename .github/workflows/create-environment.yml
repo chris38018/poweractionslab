@@ -19,11 +19,6 @@ on:
      user_id:
        description: AAD object id for the user
        required: true
-
-     Domain: 
-       description: domain the environment is being created in
-       required: true
-       default: MODERNCOMMS438399.onmicrosoft.com
        
    
  #Do Not change these values
@@ -37,12 +32,12 @@ jobs:
       RUNNER_DEBUG: 1
 
     steps:
-    - uses: actions/checkout@v0
+    - uses: actions/checkout@v4
       with:
         lfs: true
         
     - name: Create Developer Environment
-      uses: microsoft/powerplatform-actions/create-environment@v0
+      uses: microsoft/powerplatform-actions/create-environment@v4
       with:
         app-id: ${{secrets.DEV_APPID}}
         client-secret: ${{ secrets.PowerPlatformSPN }}
