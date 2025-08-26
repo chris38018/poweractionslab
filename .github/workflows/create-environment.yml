@@ -45,17 +45,17 @@ jobs:
      # run: ./script.ps1
       #shell: pwsh
       
-    - name: Create Developer Environment
+    - name: Create Sandbox Environment
       uses: microsoft/powerplatform-actions/create-environment@v0
       with:
         app-id: '0f1aaa86-6311-4b76-ad49-cbc028f3096f'
         client-secret: ${{ secrets.DEV_APP_SECRET }}
         tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
-        name: ${{ github.event.inputs.env_name}}_Dev
+        name: ${{ github.event.inputs.env_name}}_SB
         type: Developer
-        domain: ${{ github.event.inputs.domain}}Dev
+        domain: ${{ github.event.inputs.domain}}SB
     
-    - name: assign-user to developer environment
+    - name: assign-user to sandbox environment
       uses:  microsoft/powerplatform-actions/assign-user@v0
       with:
         app-id: ${{secrets.CLIENT_ID}}
