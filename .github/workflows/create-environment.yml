@@ -58,7 +58,7 @@ jobs:
         tenant-id: '65f3cfd5-0a49-4a5e-8bf4-f8ca438a9fda'
         name: ${{ github.event.inputs.env_name}}_DEV
         type: Developer
-        domain: 'https://${{ github.event.inputs.env_name}}Dev.dynamics.com'
+        domain: ${{ github.event.inputs.env_name}}Dev
         user: '46a71f9e-875a-4a1c-ba7e-b2aa08018d36'
     
     - name: assign-user to Developer environment
